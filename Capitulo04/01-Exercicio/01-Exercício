@@ -1,0 +1,145 @@
+
+                   /* EXERCÍCIOS */
+
+/* 
+
+	O NOSSO CLIENTE SOLICITOU UMA TABELA PARA ARMAZENAR OS LIVROS QUE SÃO COMERCIALIZADOS PELA EMPRESA.
+	A SOLICITAÇÃO É SOMENTE PARA LIVROS E NÃO HÁ NECESSIDADE DE REALIZAR BUSCA EM OUTRA(S) TABELAS.
+	HOJE HÁ UM FUNCIONÁRIO DE VENDAS QUE TEM UMA TABELA DO EXCEL PARA GUARDAR ESSES REGISTROS, MAS AS 
+BUSCAS ESTÃO FICANDO COMPLEXAS.
+	DECIDIU-SE ENTÃO, CRIAR UM BANCO DE DADOS SEPARADO PARA ESTE FUNCIONÁRIO.
+	APÓS A CRIAÇÃO DA TABELA, DEVEREMOS ENTREGAR ALGUMAS "QUERIES" PRONTAS PARA QUE SEJAM ENVIADAS 
+PARA O PROGRAMADOR.
+	AS QUERIES SÃO AS SEGUINTES:
+
+- TRAZER TODOS OS DADOS;
+- TRAZER O NOME DO LIVRO E O NOME DA EDITORA;
+- TRAZER O NOME DO LIVRO E A UF DOS LIVROS PUBLICADOS POR AUTORES DO SEXO MASCULINO;
+- TRAZER O NOME DO LIVRO E O NÚMERO DE PÁGINAS DOS LIVROS PUBLICADOS POR AUTORES DO SEXO FEMININO;
+- TRAZER OS VALORES DOS LIVROS DAS EDITORAS DE SÃO PAULO;
+- TRAZER OS DADOS DOS AUTORES DO SEXO MASCULINO QUE TIVERAM LIVROS PUBLICADOS POR SÃO PAULO OUR RIO DE JANEIRO
+
+*/
++----------------+---------------+------+-----+---------+-------+
+| Field          | Type          | Null | Key | Default | Extra |
++----------------+---------------+------+-----+---------+-------+
+| NOME_LIVRO     | varchar(100)  | NO   |     | NULL    |       |
+| NOME_AUTOR     | varchar(100)  | NO   |     | NULL    |       |
+| SEXO_AUTOR     | varchar(9)    | NO   |     | NULL    |       |
+| NUMERO_PAGINAS | int           | NO   |     | NULL    |       |
+| NOME_EDITORA   | varchar(100)  | NO   |     | NULL    |       |
+| VALOR_LIVRO    | decimal(18,2) | NO   |     | NULL    |       |
+| ESTADO_EDITORA | char(2)       | NO   |     | NULL    |       |
+| ANO_PUBLICACAO | int           | NO   |     | NULL    |       |
++----------------+---------------+------+-----+---------+-------+
+/* TRAZER TODOS OS DADOS */
+
+SELECT NOME_LIVRO AS LIVRO, 
+       NOME_AUTOR AS AUTOR,
+       SEXO_AUTOR AS SEXO, 
+       NUMERO_PAGINAS AS PÁGINAS, 
+       NOME_EDITORA AS EDITORA, 
+       VALOR_LIVRO AS PRECO, 
+       ESTADO_EDITORA AS UF, 
+       ANO_PUBLICACAO
+FROM LIVROS;
+
++---------------------+-------------------+-----------+----------+-------------+--------+----+----------------+
+| LIVRO               | AUTOR             | SEXO      | PÁGINAS  | EDITORA     | PRECO  | UF | ANO_PUBLICACAO |
++---------------------+-------------------+-----------+----------+-------------+--------+----+----------------+
+| Cavaleiro Real      | Ana Claudia       | Feminino  |      465 | Atlas       |  49.90 | RJ |           2009 |
+| SQL para leigos     | João Nunes        | Masculino |      450 | Addison     |  98.00 | SP |           2018 |
+| Receitas Caseiras   | Celia Tavares     | Feminino  |      210 | Atlas       |  45.00 | RJ |           2008 |
+| Pessoas Efetivas    | Eduardo Santos    | Masculino |      390 | Beta        |  78.99 | RJ |           2018 |
+| Habitos Saudáveis   | Eduardo Santos    | Masculino |      630 | Beta        | 150.98 | RJ |           2019 |
+| A Casa Marrom       | Hermes Macedo     | Masculino |      250 | Bubba       |  60.00 | MG |           2016 |
+| Estacio Querido     | Geraldo Francisco | Masculino |      310 | Insignia    | 100.00 | ES |           2015 |
+| Pra sempre amigas   | Leda Silva        | Feminino  |      510 | Insignia    |  78.98 | ES |           2011 |
+| Copas Inesqueciveis | Marco Alcantara   | Masculino |      200 | Larson      | 130.98 | RS |           2018 |
+| O poder da mente    | Clara Mafra       | Feminino  |      120 | Continental |  56.58 | SP |           2017 |
++---------------------+-------------------+-----------+----------+-------------+--------+----+----------------+
+
+/* TRAZER O NOME DO LIVRO E O NOME DA EDITORA */
+
+SELECT NOME_LIVRO AS LIVRO, NOME_EDITORA AS EDITORA
+FROM LIVROS;
+
++---------------------+-------------+
+| LIVRO               | EDITORA     |
++---------------------+-------------+
+| Cavaleiro Real      | Atlas       |
+| SQL para leigos     | Addison     |
+| Receitas Caseiras   | Atlas       |
+| Pessoas Efetivas    | Beta        |
+| Habitos Saudáveis   | Beta        |
+| A Casa Marrom       | Bubba       |
+| Estacio Querido     | Insignia    |
+| Pra sempre amigas   | Insignia    |
+| Copas Inesqueciveis | Larson      |
+| O poder da mente    | Continental |
++---------------------+-------------+
+
+/* TRAZER O NOME DO LIVRO E A UF DOS LIVROS PUBLICADOS POR AUTORES DO SEXO MASCULINO */
+
+SELECT NOME_LIVRO AS LIVRO, ESTADO_EDITORA AS UF
+FROM LIVROS
+WHERE SEXO_AUTOR = "Masculino";
+
++---------------------+----+
+| LIVRO               | UF |
++---------------------+----+
+| SQL para leigos     | SP |
+| Pessoas Efetivas    | RJ |
+| Habitos Saudáveis   | RJ |
+| A Casa Marrom       | MG |
+| Estacio Querido     | ES |
+| Copas Inesqueciveis | RS |
++---------------------+----+
+
+/* TRAZER O NOME DO LIVRO E O NÚMERO DE PÁGINAS DOS LIVROS PUBLICADOS POR AUTORES DO SEXO FEMININO */
+
+SELECT NOME_LIVRO AS LIVRO, NUMERO_PAGINAS AS PAGINAS 
+FROM LIVROS
+WHERE SEXO_AUTOR = "Feminino";
+
++-------------------+---------+
+| LIVRO             | PAGINAS |
++-------------------+---------+
+| Cavaleiro Real    |     465 |
+| Receitas Caseiras |     210 |
+| Pra sempre amigas |     510 |
+| O poder da mente  |     120 |
++-------------------+---------+
+
+/* TRAZER OS VALORES DOS LIVROS DAS EDITORAS DE SÃO PAULO */
+
+SELECT VALOR_LIVRO AS PRECO 
+FROM LIVROS 
+WHERE ESTADO_EDITORA = "SP";
+
++-------+
+| PRECO |
++-------+
+| 98.00 |
+| 56.58 |
++-------+
+
+/* TRAZER OS DADOS DOS AUTORES DO SEXO MASCULINO QUE TIVERAM LIVROS PUBLICADOS POR SÃO PAULO OUR RIO DE JANEIRO  */
+
+SELECT NOME_AUTOR AS AUTOR,
+       NOME_LIVRO AS LIVRO,
+       NOME_EDITORA AS EDITORA,
+       SEXO_AUTOR AS SEXO
+FROM LIVROS
+WHERE
+SEXO_AUTOR = "Masculino"
+AND 
+(ESTADO_EDITORA = "SP" OR ESTADO_EDITORA = "RJ");
+
++----------------+--------------------+---------+-----------+
+| AUTOR          | LIVRO              | EDITORA | SEXO      |
++----------------+--------------------+---------+-----------+
+| João Nunes     | SQL para leigos    | Addison | Masculino |
+| Eduardo Santos | Pessoas Efetivas   | Beta    | Masculino |
+| Eduardo Santos | Habitos Saudáveis  | Beta    | Masculino |
++----------------+--------------------+---------+-----------+
