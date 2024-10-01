@@ -1,0 +1,39 @@
+
+                   /* MODELAGEM BÁSICA */
+
+SHOW DATABASES;
+
+SHOW TABLES;
+
+/* TABELA CLIENTE */
+
+CLIENTE
+
+NOME - CHARACTER(50)
+CPF - NUMERIC(11)
+EMAIL - CHARACTER(50)
+SEXO - CHARACTER(1)
+ENDERECO - CHARACTER(100)
+DDD - NUMERIC(2)
+TELEFONE - CHARACTER(10)
+
+                   /* PROCESSOS DE MODELAGEM */
+
+/* FASES */
+
+/* Fases 01 e 02, geralmente são feitas pelo AD - Administrador de Dados
+MODELAGEM CONCEITUAL -- Rascunho do que será o sistema, como será construído o sistema. Pode ser feito no word, notepad++, folha de papel, por exemplo.
+MODELAGEM LÓGICA -- Tudo que foi feito na modelagem conceitual e "leva" para um programa, como por exemplo, o BrModelo, Workbench, StarUML. 
+
+/* Fase 03, geralmente são feitas pelo DBA - Administrador de Banco de Dados e/ou AD - Administrador de Dados
+MODELAGEM FÍSICA -- Scripts de Banco de Dados 
+
+                   /* TIPAGEM DE DADOS */
+
+- CHARACTER
+- CHAR
+- DECIMAL
+- NUMERIC
+- ENUM
+- FLOAT
+- DOUBLE
