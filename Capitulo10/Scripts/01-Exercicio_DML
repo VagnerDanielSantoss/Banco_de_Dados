@@ -1,0 +1,616 @@
+
+                         /* EXERCICIOS DML */
+
+/* DESC CLIENTE; */
++-----------+---------------+------+-----+---------+----------------+
+| Field     | Type          | Null | Key | Default | Extra          |
++-----------+---------------+------+-----+---------+----------------+
+| IDCLIENTE | int           | NO   | PRI | NULL    | auto_increment |
+| NOME      | varchar(100)  | NO   |     | NULL    |                |
+| CPF       | varchar(15)   | NO   | UNI | NULL    |                |
+| EMAIL     | varchar(100)  | YES  | UNI | NULL    |                |
+| SEXO      | enum('M','F') | NO   |     | NULL    |                |
++-----------+---------------+------+-----+---------+----------------+
+
+INSERT INTO CLIENTE VALUES (NULL, "JOAO PAGINA", "12345678910", "joaopagina54@bol.com", "M");
+INSERT INTO CLIENTE VALUES (NULL, "JORGE SARGETA", "12345678911", NULL, "M");
+INSERT INTO CLIENTE VALUES (NULL, "MARIA ANTONIETA", "12345678912", "maria antonieta@bol.com", "F");
+INSERT INTO CLIENTE VALUES (NULL, "PALOMA NOBREZA", "12345678913", "palomanobreza@gmail.com", "F");
+INSERT INTO CLIENTE VALUES (NULL, "CELIA RICA", "12345678914", "celiarica@ig.com", "F");
+INSERT INTO CLIENTE VALUES (NULL, "CACILDA COROTI", "12345678915", "cacildacoroti@bol.com", "F");
+INSERT INTO CLIENTE VALUES (NULL, "LUCAS DO BREJO", "12345678916", "lucasbrejo@gmail.com", "M");
+INSERT INTO CLIENTE VALUES (NULL, "ANA PERDIDA", "12345678917", NULL, "F");
+INSERT INTO CLIENTE VALUES (NULL, "CLARA CEU", "12345678918", "ceuclara@bol.com", "F");
+INSERT INTO CLIENTE VALUES (NULL, "CARLOS BUERO", "12345678919", NULL, "M");
+INSERT INTO CLIENTE VALUES (NULL, "FREDERICO ZUCKENBERG", "12345678920", NULL, "F");
+
+INSERT INTO CLIENTE VALUES (NULL,'FLAVIO JUNQUEIRA', "12345678921", "junqflavio@ig.com", "M");
+INSERT INTO CLIENTE VALUES (NULL,"ANDRE RIBEIRO", "12345678922", "andrerib01@bol.com", "M");
+INSERT INTO CLIENTE VALUES (NULL,"GIOVANA ANTONNIA", "12345678923", "antgiovanna@gmail.com", "F");
+INSERT INTO CLIENTE VALUES (NULL,"KARLA CASSILDA", "12345678924", "casskarla@gmail.com", "F");
+INSERT INTO CLIENTE VALUES (NULL,"DANIELE SAKAMOTO", "12345678925", "ssakamotodani@ig.com", "F");
+INSERT INTO CLIENTE VALUES (NULL,"LORENA SAKAMOTO", "12345678926", "ssakamotolore@ig.com", "F");
+INSERT INTO CLIENTE VALUES (NULL,"EDUARDO SAKAMOTO", "12345678927", "ssakamotoedu@ig.com", "M");
+INSERT INTO CLIENTE VALUES (NULL,"ANTONIO KISKROSKY", "12345678928", "kriskoskytony@bol.com", "M");
+INSERT INTO CLIENTE VALUES (NULL,"ANTONIO BELUSCO", "12345678929", "antoniobelusco@gmail.com", "M");
+INSERT INTO CLIENTE VALUES (NULL,"ELAINE CARRARO", "12345678930", "elainemouracarraro@gmail.com", "F");
+INSERT INTO CLIENTE VALUES (NULL,"CARMEM LUCIA", "12345678931", "carmemsilvalucia@bol.com", "F");
+INSERT INTO CLIENTE VALUES (NULL,"ADRIANA CALCANHOTO", "12345678932", NULL, "F");
+INSERT INTO CLIENTE VALUES (NULL,"JOICE CEU", "12345678933", "joiceu74@gmail.com", "F" );
+
+/* SELECT * FROM CLIENTE; */
++-----------+----------------------+-------------+------------------------------+------+
+| IDCLIENTE | NOME                 | CPF         | EMAIL                        | SEXO |
++-----------+----------------------+-------------+------------------------------+------+
+|         1 | JOAO PAGINA          | 12345678910 | joaopagina54@bol.com         | M    |
+|         3 | MARIA ANTONIETA      | 12345678912 | maria antonieta@bol.com      | F    |
+|         4 | PALOMA NOBREZA       | 12345678913 | palomanobreza@gmail.com      | F    |
+|         5 | CELIA RICA           | 12345678914 | celiarica@ig.com             | F    |
+|         6 | CACILDA COROTI       | 12345678915 | cacildacoroti@bol.com        | F    |
+|         7 | LUCAS DO BREJO       | 12345678916 | lucasbrejo@gmail.com         | M    |
+|         8 | ANA PERDIDA          | 12345678917 | NULL                         | F    |
+|         9 | CLARA CEU            | 12345678918 | ceuclara@bol.com             | F    |
+|        10 | CARLOS BUERO         | 12345678919 | NULL                         | M    |
+|        29 | JORGE SARGETA        | 12345678911 | NULL                         | M    |
+|        30 | FREDERICO ZUCKENBERG | 12345678920 | NULL                         | M    |
+|        32 | FLAVIO JUNQUEIRA     | 12345678921 | JUNQFLAVIO@IG.COM            | M    |
+|        33 | ANDRE RIBEIRO        | 12345678922 | andrerib01@bol.com           | M    |
+|        34 | GIOVANA ANTONNIA     | 12345678923 | antgiovanna@gmail.com        | F    |
+|        35 | KARLA CASSILDA       | 12345678924 | casskarla@gmail.com          | F    |
+|        36 | DANIELE SAKAMOTO     | 12345678925 | ssakamotodani@ig.com         | F    |
+|        37 | LORENA SAKAMOTO      | 12345678926 | ssakamotolore@ig.com         | F    |
+|        38 | EDUARDO SAKAMOTO     | 12345678927 | ssakamotoedu@ig.com          | M    |
+|        39 | ANTONIO KISKROSKY    | 12345678928 | kriskoskytony@bol.com        | M    |
+|        40 | ANTONIO BELUSCO      | 12345678929 | antoniobelusco@gmail.com     | M    |
+|        41 | ELAINE CARRARO       | 12345678930 | elainemouracarraro@gmail.com | F    |
+|        42 | CARMEM LUCIA         | 12345678931 | carmemsilvalucia@bol.com     | F    |
+|        43 | ADRIANA CALCANHOTO   | 12345678932 | NULL                         | F    |
+|        44 | JOICE CEU            | 12345678933 | joiceu74@gmail.com           | F    |
++-----------+----------------------+-------------+------------------------------+------+
+
+/* CADASTRE UM ENDERECO PARA CADA CLIENTE */
+
+/* DESC ENDERECO; */
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| ID_CLIENTE | int          | YES  | UNI | NULL    |                |
+| IDENDERECO | int          | NO   | PRI | NULL    | auto_increment |
+| RUA        | varchar(100) | NO   |     | NULL    |                |
+| BAIRRO     | varchar(50)  | NO   |     | NULL    |                |
+| CIDADE     | varchar(50)  | NO   |     | NULL    |                |
+| ESTADO     | char(2)      | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+
+INSERT INTO ENDERECO VALUES (6, NULL, "RUA DAS MARGARIDAS LINDAS", "FLORES DO CAMPO", "BELO HORIZONTE", "MG");
+INSERT INTO ENDERECO VALUES (10, NULL, "AVENIDA DOS LIRIOS", "COLORIDO NOVO", "PORTO ALEGRE", "RS");
+INSERT INTO ENDERECO VALUES (4, NULL, "AVENIDA DAS ORQUIDIAS", "CAMPOS ELISEOS", "SÃO PAULO", "SP");
+INSERT INTO ENDERECO VALUES (8, NULL, "AVENIDA DAS ORQUIDIAS", "CAMPOS ELISEOS", "SÃO PAULO", "SP");
+INSERT INTO ENDERECO VALUES (9, NULL, "AVENIDA ROSA BRANCA", "FLORES DO CAMPO", "RIO DE JANEIRO", "RJ");
+INSERT INTO ENDERECO VALUES (5, NULL, "RUA DAS SAMBAMBAIAS", "FLORES DO CAMPO", "CURITIBA", "PR");
+INSERT INTO ENDERECO VALUES (1, NULL, "RUA DAS TULIPAS", "TULIPAS", "CONFINS", "MG");
+INSERT INTO ENDERECO VALUES (29, NULL, "AVENIDA DOS GIRASOIS", "COLORIDO NOVO", "PORTO ALEGRE", "RS");
+INSERT INTO ENDERECO VALUES (3, NULL, "RUA ROSA DO DESERTO", "FLORES LINDAS", "CURITIBA", "PR");
+INSERT INTO ENDERECO VALUES (7, NULL, "AVENIDA BROMELIA", "FLORES LINDAS", "CURITIBA", "PR");
+INSERT INTO ENDERECO VALUES (30, NULL, "AVENIDA BROMELIA", "FLORES LINDAS", "PERNAMBUCO", "PE");
+
+INSERT INTO ENDERECO VALUES (38, NULL, "RUA GUEDES", "CASCADURA", "BELO HORIZONTE", "MG");
+INSERT INTO ENDERECO VALUES (33, NULL, "RUA MAIA LACERDA", "ESTACIO", "RIO DE JANEIRO", "RJ");
+INSERT INTO ENDERECO VALUES (41, NULL, "RUA VISCONDESSA", "CENTRO", "RIO DE JANEIRO", "RJ");
+INSERT INTO ENDERECO VALUES (39, NULL, "RUA ARAUJO LIMA", "CENTRO", "VITORIA", "ES");
+INSERT INTO ENDERECO VALUES (34, NULL, "RUA CASTRO ALVES", "LEBLON", "RIO DE JANEIRO","RJ");
+INSERT INTO ENDERECO VALUES (36, NULL, "AVENIDA CAPITAO ANTUNES","CENTRO","CURITIBA","PR");
+INSERT INTO ENDERECO VALUES (37, NULL, "AV CARLOS BARROSO", "JARDINS", "SAO PAULO", "SP");
+INSERT INTO ENDERECO VALUES (35, NULL, "ALAMEDA SAMPAIO", "BOM RETIRO", "CURITIBA", "PR");
+INSERT INTO ENDERECO VALUES (44, NULL, "RUA DA LAPA", "LAPA", "SAO PAULO", "SP");
+INSERT INTO ENDERECO VALUES (40, NULL, "RUA GERONIMO", "CENTRO", "ALAGOAS", "AL");
+INSERT INTO ENDERECO VALUES (42, NULL, "AVENIDA GETULIO VARGAS", "TULIPAS", "ALAGOAS", "AL");
+INSERT INTO ENDERECO VALUES (32, NULL, "AVENIDA PRINCIPE", 'CENTRO', "PERNAMBUCO", "PE");
+INSERT INTO ENDERECO VALUES (43, NULL, "RUA OSCAR FREIRE", "JARDINS", "SÃO PAULO", "SP");
+
+
+/* SELECT * FROM ENDERECO; */
++------------+------------+---------------------------+-----------------+----------------+--------+
+| ID_CLIENTE | IDENDERECO | RUA                       | BAIRRO          | CIDADE         | ESTADO |
++------------+------------+---------------------------+-----------------+----------------+--------+
+|          6 |        902 | RUA DAS MARGARIDAS LINDAS | FLORES DO CAMPO | BELO HORIZONTE | MG     |
+|         10 |        903 | AVENIDA DOS LIRIOS        | COLORIDO NOVO   | PORTO ALEGRE   | RS     |
+|          4 |        904 | AVENIDA DAS ORQUIDIAS     | CAMPOS ELISEOS  | SÃO PAULO      | SP     |
+|          8 |        905 | AVENIDA DAS ORQUIDIAS     | CAMPOS ELISEOS  | SÃO PAULO      | SP     |
+|          9 |        906 | AVENIDA ROSA BRANCA       | FLORES DO CAMPO | RIO DE JANEIRO | RJ     |
+|          5 |        907 | RUA DAS SAMBAMBAIAS       | FLORES DO CAMPO | CURITIBA       | PR     |
+|          1 |        908 | RUA DAS TULIPAS           | TULIPAS         | CONFINS        | MG     |
+|         29 |        909 | AVENIDA DOS GIRASOIS      | COLORIDO NOVO   | PORTO ALEGRE   | RS     |
+|          3 |        910 | RUA ROSA DO DESERTO       | FLORES LINDAS   | CURITIBA       | PR     |
+|          7 |        911 | AVENIDA BROMELIA          | FLORES LINDAS   | CURITIBA       | PR     |
+|         30 |        913 | AVENIDA BROMELIA          | FLORES LINDAS   | PERNAMBUCO     | PE     |
+|         38 |        916 | RUA GUEDES                | CASCADURA       | BELO HORIZONTE | MG     |
+|         33 |        917 | RUA MAIA LACERDA          | ESTACIO         | RIO DE JANEIRO | RJ     |
+|         41 |        918 | RUA VISCONDESSA           | CENTRO          | RIO DE JANEIRO | RJ     |
+|         39 |        919 | RUA ARAUJO LIMA           | CENTRO          | VITORIA        | ES     |
+|         34 |        920 | RUA CASTRO ALVES          | LEBLON          | RIO DE JANEIRO | RJ     |
+|         36 |        921 | AVENIDA CAPITAO ANTUNES   | CENTRO          | CURITIBA       | PR     |
+|         37 |        922 | AV CARLOS BARROSO         | JARDINS         | SAO PAULO      | SP     |
+|         35 |        923 | ALAMEDA SAMPAIO           | BOM RETIRO      | CURITIBA       | PR     |
+|         44 |        924 | RUA DA LAPA               | LAPA            | SAO PAULO      | SP     |
+|         40 |        925 | RUA GERONIMO              | CENTRO          | ALAGOAS        | AL     |
+|         42 |        926 | AVENIDA GETULIO VARGAS    | TULIPAS         | ALAGOAS        | AL     |
+|         32 |        927 | AVENIDA PRINCIPE          | CENTRO          | PERNAMBUCO     | PE     |
+|         43 |        928 | RUA OSCAR FREIRE          | JARDINS         | SÃO PAULO      | SP     |
++------------+------------+---------------------------+-----------------+----------------+--------+
+
+/* CADASTRE TELEFONES PARA OS CLIENTES */
+
+/* DESC TELEFONE; */
++------------+-------------------------------------------+------+-----+---------+----------------+
+| Field      | Type                                      | Null | Key | Default | Extra          |
++------------+-------------------------------------------+------+-----+---------+----------------+
+| ID_CLIENTE | int                                       | YES  | MUL | NULL    |                |
+| IDTELEFONE | int                                       | NO   | PRI | NULL    | auto_increment |
+| DDD        | char(2)                                   | YES  |     | NULL    |                |
+| NUMERO     | varchar(10)                               | YES  |     | NULL    |                |
+| TIPO       | enum('CELULAR','COMERCIAL','RESIDENCIAL') | YES  |     | NULL    |                |
++------------+-------------------------------------------+------+-----+---------+----------------+
+
+INSERT INTO TELEFONE VALUES (29, NULL, "51", "999991111", "CELULAR");
+INSERT INTO TELEFONE VALUES (9, NULL, "21", "999991112", "CELULAR");
+INSERT INTO TELEFONE VALUES (1, NULL, "31", "32323210", "RESIDENCIAL");
+INSERT INTO TELEFONE VALUES (7, NULL, "41", "25881010", "RESIDENCIAL");
+INSERT INTO TELEFONE VALUES (10, NULL, "51", "35788899", "COMERCIAL");
+INSERT INTO TELEFONE VALUES (3, NULL, "41", "999991113", "CELULAR");
+INSERT INTO TELEFONE VALUES (5, NULL, "41", "33333331", "COMERCIAL");
+INSERT INTO TELEFONE VALUES (8, NULL, "11", "999991115", "CELULAR");
+INSERT INTO TELEFONE VALUES (6, NULL, "31", "999991116", "CELULAR");
+INSERT INTO TELEFONE VALUES (4, NULL, "11", "21478930", "COMERCIAL");
+
+INSERT INTO TELEFONE VALUES (30, NULL, "87", "31313132", "RESIDENCIAL");
+INSERT INTO TELEFONE VALUES (30, NULL, "87", "988887774", "CELULAR");
+INSERT INTO TELEFONE VALUES (30, NULL, "87", "36981888", "COMERCIAL");
+INSERT INTO TELEFONE VALUES (44, NULL, "11", "922113344", "CELULAR");
+INSERT INTO TELEFONE VALUES (44, NULL, "11", "988775522", "CELULAR");
+INSERT INTO TELEFONE VALUES (38, NULL, "31", "25874413", "COMERCIAL");
+INSERT INTO TELEFONE VALUES (33, NULL, "21", "25896314", "RESIDENCIAL");
+INSERT INTO TELEFONE VALUES (40, NULL, "82", "24789633", "RESIDENCIAL");
+INSERT INTO TELEFONE VALUES (40, NULL, "82", "35689797", "COMERCIAL");
+INSERT INTO TELEFONE VALUES (35, NULL, "41", "999999918", "CELULAR");
+INSERT INTO TELEFONE VALUES (35, NULL, "41", "21456987", "COMERCIAL");
+INSERT INTO TELEFONE VALUES (32, NULL, "87", "21456321", "RESIDENCIAL");
+INSERT INTO TELEFONE VALUES (34, NULL, "21", "999887766", "CELULAR");
+INSERT INTO TELEFONE VALUES (43, NULL, "11", "963258741", "CELULAR");
+INSERT INTO TELEFONE VALUES (37, NULL, "11", "974125896", "CELULAR");
+INSERT INTO TELEFONE VALUES (36, NULL, "41", "974125789", "CELULAR");
+
++------------+------------+------+-----------+-------------+
+| ID_CLIENTE | IDTELEFONE | DDD  | NUMERO    | TIPO        |
++------------+------------+------+-----------+-------------+
+|         29 |          1 | 51   | 999991111 | CELULAR     |
+|          9 |          2 | 21   | 999991112 | CELULAR     |
+|          1 |          3 | 31   | 32323210  | RESIDENCIAL |
+|          7 |          4 | 41   | 25881010  | RESIDENCIAL |
+|         10 |          5 | 51   | 35788899  | COMERCIAL   |
+|          3 |          6 | 41   | 999991113 | CELULAR     |
+|          5 |          7 | 41   | 33333331  | COMERCIAL   |
+|          8 |          8 | 11   | 999991115 | CELULAR     |
+|          6 |          9 | 31   | 999991116 | CELULAR     |
+|          4 |         10 | 11   | 21478930  | COMERCIAL   |
+|          9 |         11 | 21   | 32323230  | COMERCIAL   |
+|          8 |         12 | 11   | 999991120 | CELULAR     |
+|         10 |         13 | 51   | 999999940 | CELULAR     |
+|         10 |         14 | 51   | 35788899  | RESIDENCIAL |
+|          3 |         15 | 41   | 357881147 | COMERCIAL   |
+|          4 |         16 | NULL | NULL      | NULL        |
+|          5 |         17 | NULL | NULL      | NULL        |
+|          6 |         18 | NULL | NULL      | NULL        |
+|         30 |         19 | 87   | 31313132  | RESIDENCIAL |
+|         30 |         20 | 87   | 988887774 | CELULAR     |
+|         30 |         21 | 87   | 36981888  | COMERCIAL   |
+|         44 |         22 | 11   | 922113344 | CELULAR     |
+|         44 |         23 | 11   | 988775522 | CELULAR     |
+|         38 |         24 | 31   | 25874413  | COMERCIAL   |
+|         33 |         25 | 21   | 25896314  | RESIDENCIAL |
+|         40 |         26 | 82   | 24789633  | RESIDENCIAL |
+|         40 |         27 | 82   | 35689797  | COMERCIAL   |
+|         35 |         28 | 41   | 999999918 | CELULAR     |
+|         35 |         29 | 41   | 21456987  | COMERCIAL   |
+|         32 |         30 | 87   | 21456321  | RESIDENCIAL |
+|         34 |         31 | 21   | 999887766 | CELULAR     |
+|         43 |         32 | 11   | 963258741 | CELULAR     |
+|         37 |         33 | 11   | 974125896 | CELULAR     |
+|         36 |         34 | 41   | 974125789 | CELULAR     |
++------------+------------+------+-----------+-------------+
+
+                  /* RELATORIO GERAL DE TODOS OS CLIENTES */
+
++-----------+---------------+------+-----+---------+----------------+
+| Field     | Type          | Null | Key | Default | Extra          |
++-----------+---------------+------+-----+---------+----------------+
+| IDCLIENTE | int           | NO   | PRI | NULL    | auto_increment |
+| NOME      | varchar(100)  | NO   |     | NULL    |                |
+| CPF       | varchar(15)   | NO   | UNI | NULL    |                |
+| EMAIL     | varchar(100)  | YES  | UNI | NULL    |                |
+| SEXO      | enum('M','F') | NO   |     | NULL    |                |
++-----------+---------------+------+-----+---------+----------------+
++------------+-------------------------------------------+------+-----+---------+----------------+
+| Field      | Type                                      | Null | Key | Default | Extra          |
++------------+-------------------------------------------+------+-----+---------+----------------+
+| ID_CLIENTE | int                                       | YES  | MUL | NULL    |                |
+| IDTELEFONE | int                                       | NO   | PRI | NULL    | auto_increment |
+| DDD        | char(2)                                   | YES  |     | NULL    |                |
+| NUMERO     | varchar(10)                               | YES  |     | NULL    |                |
+| TIPO       | enum('CELULAR','COMERCIAL','RESIDENCIAL') | YES  |     | NULL    |                |
++------------+-------------------------------------------+------+-----+---------+----------------+
++------------+-------------------------------------------+------+-----+---------+----------------+
+| Field      | Type                                      | Null | Key | Default | Extra          |
++------------+-------------------------------------------+------+-----+---------+----------------+
+| ID_CLIENTE | int                                       | YES  | MUL | NULL    |                |
+| IDTELEFONE | int                                       | NO   | PRI | NULL    | auto_increment |
+| DDD        | char(2)                                   | YES  |     | NULL    |                |
+| NUMERO     | varchar(10)                               | YES  |     | NULL    |                |
+| TIPO       | enum('CELULAR','COMERCIAL','RESIDENCIAL') | YES  |     | NULL    |                |
++------------+-------------------------------------------+------+-----+---------+----------------+
+
+SELECT CLI.IDCLIENTE, CLI.NOME, CLI.CPF, CLI.EMAIL, CLI.SEXO, 
+       END.RUA, END.BAIRRO, END.CIDADE, END.ESTADO, 
+       TEL.DDD, TEL.NUMERO, TEL.TIPO 
+FROM CLIENTE AS CLI
+	INNER JOIN ENDERECO AS END
+	ON CLI.IDCLIENTE = END.ID_CLIENTE
+	INNER JOIN TELEFONE AS TEL
+	ON CLI.IDCLIENTE = TEL.ID_CLIENTE;
+
+                  /* RELATORIO GERAL DE TODOS OS CLIENTES (TELEFONE E ENDERECO) */
+
+SELECT TELEFONE.DDD, TELEFONE.NUMERO, ENDERECO.RUA  
+FROM CLIENTE 
+	INNER JOIN TELEFONE  
+	ON CLIENTE.IDCLIENTE = TELEFONE.ID_CLIENTE
+    INNER JOIN ENDERECO  
+    ON CLIENTE.IDCLIENTE = ENDERECO.ID_CLIENTE;
+
++------+-----------+---------------------------+
+| DDD  | NUMERO    | RUA                       |
++------+-----------+---------------------------+
+| 31   | 32323210  | RUA DAS TULIPAS           |
+| 51   | 999991111 | AVENIDA DOS GIRASOIS      |
+| 41   | 999991113 | RUA ROSA DO DESERTO       |
+| 41   | 357881147 | RUA ROSA DO DESERTO       |
+| 11   | 21478930  | AVENIDA DAS ORQUIDIAS     |
+| NULL | NULL      | AVENIDA DAS ORQUIDIAS     |
+| 41   | 33333331  | RUA DAS SAMBAMBAIAS       |
+| NULL | NULL      | RUA DAS SAMBAMBAIAS       |
+| 31   | 999991116 | RUA DAS MARGARIDAS LINDAS |
+| NULL | NULL      | RUA DAS MARGARIDAS LINDAS |
+| 41   | 25881010  | AVENIDA BROMELIA          |
+| 11   | 999991115 | AVENIDA DAS ORQUIDIAS     |
+| 11   | 999991120 | AVENIDA DAS ORQUIDIAS     |
+| 21   | 999991112 | AVENIDA ROSA BRANCA       |
+| 21   | 32323230  | AVENIDA ROSA BRANCA       |
+| 51   | 35788899  | AVENIDA DOS LIRIOS        |
+| 51   | 999999940 | AVENIDA DOS LIRIOS        |
+| 51   | 35788899  | AVENIDA DOS LIRIOS        |
+| 87   | 31313132  | AVENIDA BROMELIA          |
+| 87   | 988887774 | AVENIDA BROMELIA          |
+| 87   | 36981888  | AVENIDA BROMELIA          |
+| 87   | 21456321  | AVENIDA PRINCIPE          |
+| 21   | 25896314  | RUA MAIA LACERDA          |
+| 21   | 999887766 | RUA CASTRO ALVES          |
+| 41   | 999999918 | ALAMEDA SAMPAIO           |
+| 41   | 21456987  | ALAMEDA SAMPAIO           |
+| 41   | 974125789 | AVENIDA CAPITAO ANTUNES   |
+| 11   | 974125896 | AV CARLOS BARROSO         |
+| 31   | 25874413  | RUA GUEDES                |
+| 82   | 24789633  | RUA GERONIMO              |
+| 82   | 35689797  | RUA GERONIMO              |
+| 11   | 963258741 | RUA OSCAR FREIRE          |
+| 11   | 922113344 | RUA DA LAPA               |
+| 11   | 988775522 | RUA DA LAPA               |
++------+-----------+---------------------------+
+
+                 /* RELATORIO DE HOMENS */
+
+SELECT CLIENTE.IDCLIENTE, CLIENTE.NOME, CLIENTE.CPF, CLIENTE.EMAIL, CLIENTE.SEXO,
+       ENDERECO.RUA, ENDERECO.BAIRRO, ENDERECO.CIDADE, ENDERECO.ESTADO,
+       TELEFONE.DDD, TELEFONE.NUMERO, TELEFONE.TIPO
+FROM CLIENTE
+    INNER JOIN ENDERECO 
+    ON CLIENTE.IDCLIENTE = ENDERECO.ID_CLIENTE
+    INNER JOIN TELEFONE 
+    ON CLIENTE.IDCLIENTE = TELEFONE.ID_CLIENTE
+WHERE SEXO = "M";
+
++-----------+----------------------+-------------+--------------------------+------+
+| IDCLIENTE | NOME                 | CPF         | EMAIL                    | SEXO |
++-----------+----------------------+-------------+--------------------------+------+
+|         1 | JOAO PAGINA          | 12345678910 | joaopagina54@bol.com     | M    |
+|         7 | LUCAS DO BREJO       | 12345678916 | lucasbrejo@gmail.com     | M    |
+|        10 | CARLOS BUERO         | 12345678919 | NULL                     | M    |
+|        29 | JORGE SARGETA        | 12345678911 | NULL                     | M    |
+|        30 | FREDERICO ZUCKENBERG | 12345678920 | NULL                     | M    |
+|        32 | FLAVIO JUNQUEIRA     | 12345678921 | JUNQFLAVIO@IG.COM        | M    |
+|        33 | ANDRE RIBEIRO        | 12345678922 | andrerib01@bol.com       | M    |
+|        38 | EDUARDO SAKAMOTO     | 12345678927 | ssakamotoedu@ig.com      | M    |
+|        39 | ANTONIO KISKROSKY    | 12345678928 | kriskoskytony@bol.com    | M    |
+|        40 | ANTONIO BELUSCO      | 12345678929 | antoniobelusco@gmail.com | M    |
++-----------+----------------------+-------------+--------------------------+------+
+
+                 /* RELATORIO DE MULHERES */
+
+SELECT CLIENTE.IDCLIENTE, CLIENTE.NOME, CLIENTE.CPF, CLIENTE.EMAIL, CLIENTE.SEXO,
+       ENDERECO.RUA, ENDERECO.BAIRRO, ENDERECO.CIDADE, ENDERECO.ESTADO,
+       TELEFONE.DDD, TELEFONE.NUMERO, TELEFONE.TIPO
+FROM CLIENTE 
+    INNER JOIN ENDERECO 
+    ON CLIENTE.IDCLIENTE = ENDERECO.ID_CLIENTE
+    INNER JOIN TELEFONE 
+    ON CLIENTE.IDCLIENTE = TELEFONE.ID_CLIENTE
+WHERE SEXO = "F";
+
++-----------+--------------------+-------------+------------------------------+------+
+| IDCLIENTE | NOME               | CPF         | EMAIL                        | SEXO |
++-----------+--------------------+-------------+------------------------------+------+
+|         3 | MARIA ANTONIETA    | 12345678912 | maria antonieta@bol.com      | F    |
+|         4 | PALOMA NOBREZA     | 12345678913 | palomanobreza@gmail.com      | F    |
+|         5 | CELIA RICA         | 12345678914 | celiarica@ig.com             | F    |
+|         6 | CACILDA COROTI     | 12345678915 | cacildacoroti@bol.com        | F    |
+|         8 | ANA PERDIDA        | 12345678917 | NULL                         | F    |
+|         9 | CLARA CEU          | 12345678918 | ceuclara@bol.com             | F    |
+|        34 | GIOVANA ANTONNIA   | 12345678923 | antgiovanna@gmail.com        | F    |
+|        35 | KARLA CASSILDA     | 12345678924 | casskarla@gmail.com          | F    |
+|        36 | DANIELE SAKAMOTO   | 12345678925 | ssakamotodani@ig.com         | F    |
+|        37 | LORENA SAKAMOTO    | 12345678926 | ssakamotolore@ig.com         | F    |
+|        41 | ELAINE CARRARO     | 12345678930 | elainemouracarraro@gmail.com | F    |
+|        42 | CARMEM LUCIA       | 12345678931 | carmemsilvalucia@bol.com     | F    |
+|        43 | ADRIANA CALCANHOTO | 12345678932 | NULL                         | F    |
+|        44 | JOICE CEU          | 12345678933 | joiceu74@gmail.com           | F    |
++-----------+--------------------+-------------+------------------------------+------+
+
+                 /* QUANTIDADE DE HOMENS E MULHERES */
+
+
+SELECT SEXO, COUNT(*) AS QTD
+FROM CLIENTE
+GROUP BY SEXO;
+
++------+-----+
+| SEXO | QTD |
++------+-----+
+| M    |  10 |
+| F    |  14 |
++------+-----+
+
+/* ======================================================================================================================================*/
+/* ======================================================================================================================================*/
+
+/* 03 
+/* IDS E EMAIL DAS MULHERES QUE MOREM EM CURITIBA NO BAIRRO FLORES LINDAS E QUE NÃO TENHAM CELULAR */
+
+SELECT CLIENTE.IDCLIENTE, CLIENTE.NOME, CLIENTE.EMAIL, CLIENTE.SEXO, ENDERECO.CIDADE, ENDERECO.BAIRRO, TELEFONE.TIPO
+FROM CLIENTE
+    INNER JOIN ENDERECO 
+    ON CLIENTE.IDCLIENTE = ENDERECO.ID_CLIENTE
+    INNER JOIN TELEFONE 
+    ON CLIENTE.IDCLIENTE = TELEFONE.ID_CLIENTE;
++-----------+----------------------+--------------------------+------+----------------+-----------------+-------------+
+| IDCLIENTE | NOME                 | EMAIL                    | SEXO | CIDADE         | BAIRRO          | TIPO        |
++-----------+----------------------+--------------------------+------+----------------+-----------------+-------------+
+|         1 | JOAO PAGINA          | joaopagina54@bol.com     | M    | CONFINS        | TULIPAS         | RESIDENCIAL |
+|         3 | MARIA ANTONIETA      | maria antonieta@bol.com  | F    | CURITIBA       | FLORES LINDAS   | CELULAR     |
+|         3 | MARIA ANTONIETA      | maria antonieta@bol.com  | F    | CURITIBA       | FLORES LINDAS   | COMERCIAL   |
+|         4 | PALOMA NOBREZA       | palomanobreza@gmail.com  | F    | SÃO PAULO      | CAMPOS ELISEOS  | COMERCIAL   |
+|         4 | PALOMA NOBREZA       | palomanobreza@gmail.com  | F    | SÃO PAULO      | CAMPOS ELISEOS  | NULL        |
+|         5 | CELIA RICA           | celiarica@ig.com         | F    | CURITIBA       | FLORES DO CAMPO | COMERCIAL   |
+|         5 | CELIA RICA           | celiarica@ig.com         | F    | CURITIBA       | FLORES DO CAMPO | NULL        |
+|         6 | CACILDA COROTI       | cacildacoroti@bol.com    | F    | BELO HORIZONTE | FLORES DO CAMPO | CELULAR     |
+|         6 | CACILDA COROTI       | cacildacoroti@bol.com    | F    | BELO HORIZONTE | FLORES DO CAMPO | NULL        |
+|         7 | LUCAS DO BREJO       | lucasbrejo@gmail.com     | M    | CURITIBA       | FLORES LINDAS   | RESIDENCIAL |
+|         8 | ANA PERDIDA          | NULL                     | F    | SÃO PAULO      | CAMPOS ELISEOS  | CELULAR     |
+|         8 | ANA PERDIDA          | NULL                     | F    | SÃO PAULO      | CAMPOS ELISEOS  | CELULAR     |
+|         9 | CLARA CEU            | ceuclara@bol.com         | F    | RIO DE JANEIRO | FLORES DO CAMPO | CELULAR     |
+|         9 | CLARA CEU            | ceuclara@bol.com         | F    | RIO DE JANEIRO | FLORES DO CAMPO | COMERCIAL   |
+|        10 | CARLOS BUERO         | NULL                     | M    | PORTO ALEGRE   | COLORIDO NOVO   | COMERCIAL   |
+|        10 | CARLOS BUERO         | NULL                     | M    | PORTO ALEGRE   | COLORIDO NOVO   | CELULAR     |
+|        10 | CARLOS BUERO         | NULL                     | M    | PORTO ALEGRE   | COLORIDO NOVO   | RESIDENCIAL |
+|        29 | JORGE SARGETA        | NULL                     | M    | PORTO ALEGRE   | COLORIDO NOVO   | CELULAR     |
+|        30 | FREDERICO ZUCKENBERG | NULL                     | M    | PERNAMBUCO     | FLORES LINDAS   | RESIDENCIAL |
+|        30 | FREDERICO ZUCKENBERG | NULL                     | M    | PERNAMBUCO     | FLORES LINDAS   | CELULAR     |
+|        30 | FREDERICO ZUCKENBERG | NULL                     | M    | PERNAMBUCO     | FLORES LINDAS   | COMERCIAL   |
+|        32 | FLAVIO JUNQUEIRA     | JUNQFLAVIO@IG.COM        | M    | PERNAMBUCO     | CENTRO          | RESIDENCIAL |
+|        33 | ANDRE RIBEIRO        | andrerib01@bol.com       | M    | RIO DE JANEIRO | ESTACIO         | RESIDENCIAL |
+|        34 | GIOVANA ANTONNIA     | antgiovanna@gmail.com    | F    | RIO DE JANEIRO | LEBLON          | CELULAR     |
+|        35 | KARLA CASSILDA       | casskarla@gmail.com      | F    | CURITIBA       | BOM RETIRO      | CELULAR     |
+|        35 | KARLA CASSILDA       | casskarla@gmail.com      | F    | CURITIBA       | BOM RETIRO      | COMERCIAL   |
+|        36 | DANIELE SAKAMOTO     | ssakamotodani@ig.com     | F    | CURITIBA       | CENTRO          | CELULAR     |
+|        37 | LORENA SAKAMOTO      | ssakamotolore@ig.com     | F    | SAO PAULO      | JARDINS         | CELULAR     |
+|        38 | EDUARDO SAKAMOTO     | ssakamotoedu@ig.com      | M    | BELO HORIZONTE | CASCADURA       | COMERCIAL   |
+|        40 | ANTONIO BELUSCO      | antoniobelusco@gmail.com | M    | ALAGOAS        | CENTRO          | RESIDENCIAL |
+|        40 | ANTONIO BELUSCO      | antoniobelusco@gmail.com | M    | ALAGOAS        | CENTRO          | COMERCIAL   |
+|        43 | ADRIANA CALCANHOTO   | NULL                     | F    | SÃO PAULO      | JARDINS         | CELULAR     |
+|        44 | JOICE CEU            | joiceu74@gmail.com       | F    | SAO PAULO      | LAPA            | CELULAR     |
+|        44 | JOICE CEU            | joiceu74@gmail.com       | F    | SAO PAULO      | LAPA            | CELULAR     |
++-----------+----------------------+--------------------------+------+----------------+-----------------+-------------+
+SELECT CLIENTE.IDCLIENTE, CLIENTE.NOME, CLIENTE.EMAIL, CLIENTE.SEXO, ENDERECO.CIDADE, ENDERECO.BAIRRO, TELEFONE.TIPO
+FROM CLIENTE
+    INNER JOIN ENDERECO 
+    ON CLIENTE.IDCLIENTE = ENDERECO.ID_CLIENTE
+    INNER JOIN TELEFONE 
+    ON CLIENTE.IDCLIENTE = TELEFONE.ID_CLIENTE
+WHERE 
+SEXO = "F";
++-----------+--------------------+-------------------------+------+----------------+-----------------+-----------+
+| IDCLIENTE | NOME               | EMAIL                   | SEXO | CIDADE         | BAIRRO          | TIPO      |
++-----------+--------------------+-------------------------+------+----------------+-----------------+-----------+
+|         3 | MARIA ANTONIETA    | maria antonieta@bol.com | F    | CURITIBA       | FLORES LINDAS   | CELULAR   |
+|         3 | MARIA ANTONIETA    | maria antonieta@bol.com | F    | CURITIBA       | FLORES LINDAS   | COMERCIAL |
+|         4 | PALOMA NOBREZA     | palomanobreza@gmail.com | F    | SÃO PAULO      | CAMPOS ELISEOS  | COMERCIAL |
+|         4 | PALOMA NOBREZA     | palomanobreza@gmail.com | F    | SÃO PAULO      | CAMPOS ELISEOS  | NULL      |
+|         5 | CELIA RICA         | celiarica@ig.com        | F    | CURITIBA       | FLORES DO CAMPO | COMERCIAL |
+|         5 | CELIA RICA         | celiarica@ig.com        | F    | CURITIBA       | FLORES DO CAMPO | NULL      |
+|         6 | CACILDA COROTI     | cacildacoroti@bol.com   | F    | BELO HORIZONTE | FLORES DO CAMPO | CELULAR   |
+|         6 | CACILDA COROTI     | cacildacoroti@bol.com   | F    | BELO HORIZONTE | FLORES DO CAMPO | NULL      |
+|         8 | ANA PERDIDA        | NULL                    | F    | SÃO PAULO      | CAMPOS ELISEOS  | CELULAR   |
+|         8 | ANA PERDIDA        | NULL                    | F    | SÃO PAULO      | CAMPOS ELISEOS  | CELULAR   |
+|         9 | CLARA CEU          | ceuclara@bol.com        | F    | RIO DE JANEIRO | FLORES DO CAMPO | CELULAR   |
+|         9 | CLARA CEU          | ceuclara@bol.com        | F    | RIO DE JANEIRO | FLORES DO CAMPO | COMERCIAL |
+|        34 | GIOVANA ANTONNIA   | antgiovanna@gmail.com   | F    | RIO DE JANEIRO | LEBLON          | CELULAR   |
+|        35 | KARLA CASSILDA     | casskarla@gmail.com     | F    | CURITIBA       | BOM RETIRO      | CELULAR   |
+|        35 | KARLA CASSILDA     | casskarla@gmail.com     | F    | CURITIBA       | BOM RETIRO      | COMERCIAL |
+|        36 | DANIELE SAKAMOTO   | ssakamotodani@ig.com    | F    | CURITIBA       | CENTRO          | CELULAR   |
+|        37 | LORENA SAKAMOTO    | ssakamotolore@ig.com    | F    | SAO PAULO      | JARDINS         | CELULAR   |
+|        43 | ADRIANA CALCANHOTO | NULL                    | F    | SÃO PAULO      | JARDINS         | CELULAR   |
+|        44 | JOICE CEU          | joiceu74@gmail.com      | F    | SAO PAULO      | LAPA            | CELULAR   |
+|        44 | JOICE CEU          | joiceu74@gmail.com      | F    | SAO PAULO      | LAPA            | CELULAR   |
++-----------+--------------------+-------------------------+------+----------------+-----------------+-----------+
+SELECT CLIENTE.IDCLIENTE, CLIENTE.NOME, CLIENTE.EMAIL, CLIENTE.SEXO, ENDERECO.CIDADE, ENDERECO.BAIRRO, TELEFONE.TIPO
+FROM CLIENTE
+    INNER JOIN ENDERECO 
+    ON CLIENTE.IDCLIENTE = ENDERECO.ID_CLIENTE
+    INNER JOIN TELEFONE 
+    ON CLIENTE.IDCLIENTE = TELEFONE.ID_CLIENTE
+WHERE 
+SEXO = "F"
+AND 
+BAIRRO = "FLORES LINDAS" AND CIDADE = "CURITIBA";
++-----------+-----------------+-------------------------+------+----------+---------------+-----------+
+| IDCLIENTE | NOME            | EMAIL                   | SEXO | CIDADE   | BAIRRO        | TIPO      |
++-----------+-----------------+-------------------------+------+----------+---------------+-----------+
+|         3 | MARIA ANTONIETA | maria antonieta@bol.com | F    | CURITIBA | FLORES LINDAS | CELULAR   |
+|         3 | MARIA ANTONIETA | maria antonieta@bol.com | F    | CURITIBA | FLORES LINDAS | COMERCIAL |
++-----------+-----------------+-------------------------+------+----------+---------------+-----------+
+SELECT CLIENTE.IDCLIENTE, CLIENTE.EMAIL,  CLIENTE.NOME, CLIENTE.SEXO, ENDERECO.CIDADE, ENDERECO.BAIRRO, TELEFONE.TIPO
+FROM CLIENTE
+    INNER JOIN ENDERECO 
+    ON CLIENTE.IDCLIENTE = ENDERECO.ID_CLIENTE
+    INNER JOIN TELEFONE 
+    ON CLIENTE.IDCLIENTE = TELEFONE.ID_CLIENTE
+WHERE 
+SEXO = "F"
+AND 
+BAIRRO = "FLORES LINDAS" AND CIDADE = "CURITIBA"
+AND 
+TIPO = "COMERCIAL" OR TIPO = "RESIDENCIAL";
+/* A RESPOSTA ESTÁ ERRADA PORQUE O BANCO RETORNOU [SEXO = F, BAIRRO = FLORES LINDAS, CIDADE = CURITIBA, TIPO = COMERCIAL],
+COMO SENDO VERDADE, OU SEJA, COLOCOU UMA TABELA VERDADE.
+
+AO COMPARAR COM O OPERADOR  "OR" POSTERIORMENTE, A CONDIÇÃO RESIDENCIAL SE TORNOU VERDADEIRA TAMBÉM, NESTE CASO, FOI
+ENTREGUE O RESULTADO DEVIDO A TABELA VERDADE ENTRE OS OPERADORES "AND" E "OR" SEM PRECEDÊNCIA. */
++-----------+--------------------------+----------------------+------+----------------+---------------+-------------+
+| IDCLIENTE | EMAIL                    | NOME                 | SEXO | CIDADE         | BAIRRO        | TIPO        |
++-----------+--------------------------+----------------------+------+----------------+---------------+-------------+
+|         1 | joaopagina54@bol.com     | JOAO PAGINA          | M    | CONFINS        | TULIPAS       | RESIDENCIAL |
+|         7 | lucasbrejo@gmail.com     | LUCAS DO BREJO       | M    | CURITIBA       | FLORES LINDAS | RESIDENCIAL |
+|        10 | NULL                     | CARLOS BUERO         | M    | PORTO ALEGRE   | COLORIDO NOVO | RESIDENCIAL |
+|         3 | maria antonieta@bol.com  | MARIA ANTONIETA      | F    | CURITIBA       | FLORES LINDAS | COMERCIAL   |
+|        30 | NULL                     | FREDERICO ZUCKENBERG | M    | PERNAMBUCO     | FLORES LINDAS | RESIDENCIAL |
+|        33 | andrerib01@bol.com       | ANDRE RIBEIRO        | M    | RIO DE JANEIRO | ESTACIO       | RESIDENCIAL |
+|        40 | antoniobelusco@gmail.com | ANTONIO BELUSCO      | M    | ALAGOAS        | CENTRO        | RESIDENCIAL |
+|        32 | JUNQFLAVIO@IG.COM        | FLAVIO JUNQUEIRA     | M    | PERNAMBUCO     | CENTRO        | RESIDENCIAL |
++-----------+--------------------------+----------------------+------+----------------+---------------+-------------+
+SELECT CLIENTE.IDCLIENTE, CLIENTE.EMAIL,  CLIENTE.NOME, CLIENTE.SEXO, ENDERECO.CIDADE, ENDERECO.BAIRRO, TELEFONE.TIPO
+FROM CLIENTE
+    INNER JOIN ENDERECO 
+    ON CLIENTE.IDCLIENTE = ENDERECO.ID_CLIENTE
+    INNER JOIN TELEFONE 
+    ON CLIENTE.IDCLIENTE = TELEFONE.ID_CLIENTE
+WHERE 
+SEXO = "F"
+AND 
+BAIRRO = "FLORES LINDAS" AND CIDADE = "CURITIBA"
+AND 
+TIPO IN ("COMERCIAL", "RESIDENCIAL");
++-----------+-------------------------+-----------------+------+----------+---------------+-----------+
+| IDCLIENTE | EMAIL                   | NOME            | SEXO | CIDADE   | BAIRRO        | TIPO      |
++-----------+-------------------------+-----------------+------+----------+---------------+-----------+
+|         3 | maria antonieta@bol.com | MARIA ANTONIETA | F    | CURITIBA | FLORES LINDAS | COMERCIAL |
++-----------+-------------------------+-----------------+------+----------+---------------+-----------+
+/* ESTA RESPOSTA TAMBÉM ESTÁ ERRADA - AO COLOCAR PRECEDÊNCIA NO TIPO, A CONDIÇÃO "OR" FOI SATISFEITA. 
+
+MAS É SABIDO QUE A CLIENTE "MARIA ANTONIETA" NÃO PODERIA TER VINDO, POIS ELA POSSUI TELEFONE CELULAR E COMERCIAL
++-----------+-----------------+-------------------------+------+----------+---------------+-----------+
+| IDCLIENTE | NOME            | EMAIL                   | SEXO | CIDADE   | BAIRRO        | TIPO      |
++-----------+-----------------+-------------------------+------+----------+---------------+-----------+
+|         3 | MARIA ANTONIETA | maria antonieta@bol.com | F    | CURITIBA | FLORES LINDAS | CELULAR   |
+|         3 | MARIA ANTONIETA | maria antonieta@bol.com | F    | CURITIBA | FLORES LINDAS | COMERCIAL |
++-----------+-----------------+-------------------------+------+----------+---------------+-----------+
+E A SOLICITAÇÃO PEDE SOMENTE PESSOAS QUE NÃO POSSUAM CELULAR.
+
+NESTE CASO, É NECESSÁRIO REALIZAR UMA SUBQUERY, POIS A REGRA DE NEGÓCIO NESTE CASO ESPECÍFICO É 1xN (na tabela telefone).
+
+
+
+
+
+
+
+/* ======================================================================================================================================*/
+/* ======================================================================================================================================*/
+
+/*04
+/* Para uma campanha de marketing, o setor solicitou um relatório com o NOME, EMAIL e TELEFONE CELULAR dos clientes
+que morem no estado do RIO DE JANEIRO.
+É necessário passar a query para gerar o relatório para o programador. */
+
+SELECT CLIENTE.NOME, CLIENTE.EMAIL, TELEFONE.DDD, TELEFONE.NUMERO AS CELULAR  /* PROJEÇÃO */
+FROM CLIENTE  /* ORIGEM */ 
+    INNER JOIN ENDERECO  /* JUNÇÃO */
+    ON CLIENTE.IDCLIENTE = ENDERECO.ID_CLIENTE  /* JUNÇÃO CONDIÇÃO */
+    INNER JOIN TELEFONE  /* JUNÇÃO */
+    ON CLIENTE.IDCLIENTE = TELEFONE.ID_CLIENTE  /* JUNÇÃO CONDIÇÃO*/
+WHERE  /* SELEÇÃO */
+    TELEFONE.TIPO = "CELULAR"  
+AND  /* SELEÇÃO */
+    ENDERECO.ESTADO = "RJ";
+
++------------------+-----------------------+------+-----------+
+| NOME             | EMAIL                 | DDD  | CELULAR   |
++------------------+-----------------------+------+-----------+
+| CLARA CEU        | ceuclara@bol.com      | 21   | 999991112 |
+| GIOVANA ANTONNIA | antgiovanna@gmail.com | 21   | 999887766 |
++------------------+-----------------------+------+-----------+
+/* ======================================================================================================================================*/
+/* ======================================================================================================================================*/
+
+/* 05
+/* Para uma campanha de produtos de beleza, o setor comercial solicitou um relatório com o NOME, EMAIL, TELEFONE CELULAR das
+mulheres que moram no estado de SÃO PAULO.
+É necessário passar a query para gerar o relatório para o programador. */
+
+SELECT CLIENTE.NOME, CLIENTE.EMAIL, TELEFONE.DDD, TELEFONE.NUMERO AS CELULAR
+FROM CLIENTE
+    INNER JOIN ENDERECO 
+    ON CLIENTE.IDCLIENTE = ENDERECO.ID_CLIENTE
+    INNER JOIN TELEFONE 
+    ON CLIENTE.IDCLIENTE = TELEFONE.ID_CLIENTE
+WHERE
+SEXO = "F"
+AND
+    ENDERECO.ESTADO = "SP" AND TELEFONE.TIPO = "CELULAR";
++--------------------+----------------------+------+-----------+
+| NOME               | EMAIL                | DDD  | CELULAR   |
++--------------------+----------------------+------+-----------+
+| ANA PERDIDA        | NULL                 | 11   | 999991115 |
+| ANA PERDIDA        | NULL                 | 11   | 999991120 |
+| LORENA SAKAMOTO    | ssakamotolore@ig.com | 11   | 974125896 |
+| JOICE CEU          | joiceu74@gmail.com   | 11   | 922113344 |
+| JOICE CEU          | joiceu74@gmail.com   | 11   | 988775522 |
+| ADRIANA CALCANHOTO | NULL                 | 11   | 963258741 |
++--------------------+----------------------+------+-----------+
+
+SELECT CLIENTE.NOME, CLIENTE.EMAIL, TELEFONE.DDD, TELEFONE.NUMERO AS CELULAR
+FROM CLIENTE
+    INNER JOIN ENDERECO 
+    ON CLIENTE.IDCLIENTE = ENDERECO.ID_CLIENTE
+    INNER JOIN TELEFONE 
+    ON CLIENTE.IDCLIENTE = TELEFONE.ID_CLIENTE
+WHERE
+SEXO = "F"
+AND
+    ENDERECO.ESTADO = "SP" AND TELEFONE.TIPO = "CELULAR"
+AND 
+    EMAIL IS NOT NULL;
++-----------------+----------------------+------+-----------+
+| NOME            | EMAIL                | DDD  | CELULAR   |
++-----------------+----------------------+------+-----------+
+| LORENA SAKAMOTO | ssakamotolore@ig.com | 11   | 974125896 |
+| JOICE CEU       | joiceu74@gmail.com   | 11   | 922113344 |
+| JOICE CEU       | joiceu74@gmail.com   | 11   | 988775522 |
++-----------------+----------------------+------+-----------+
