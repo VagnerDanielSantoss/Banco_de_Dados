@@ -1,0 +1,635 @@
+
+/* =================== TRIGGERS ==================== */
+
+CREATE TABLE TBL_PRODUTOS
+(
+	IDPRODUTO INTEGER PRIMARY KEY IDENTITY,
+	NOME VARCHAR(100) NOT NULL,
+	CATEGORIA VARCHAR(50) NOT NULL,
+	PRECO DECIMAL(18,2) NOT NULL
+);
+GO
+
+CREATE TABLE TBL_HISTORICO
+(
+	IDOPERACAO INTEGER PRIMARY KEY IDENTITY,
+	PRODUTO VARCHAR(100) NOT NULL,
+	CATEGORIA VARCHAR(50) NOT NULL,
+	PRECOANTIGO DECIMAL(18,2) NOT NULL,
+	PRECONOVO DECIMAL(18,2) NOT NULL,
+	DATA  DATETIME,
+	USUARIO VARCHAR(50),
+	MENSAGEM VARCHAR(100)
+);
+GO
+
+INSERT INTO TBL_PRODUTOS
+(NOME, CATEGORIA, PRECO)
+VALUES
+('LIVRO SQL SERVER ESSENCIAL', 'LIVROS', 102.98);
+
+INSERT INTO TBL_PRODUTOS
+(NOME, CATEGORIA, PRECO)
+VALUES
+('LIVRO ORACLE ESSENCIAL', 'LIVROS', 210.41);
+
+INSERT INTO TBL_PRODUTOS
+(NOME, CATEGORIA, PRECO)
+VALUES
+('LIVRO C# DO BASICO AO AVANCADO', 'LIVROS', 153.55);
+
+INSERT INTO TBL_PRODUTOS
+(NOME, CATEGORIA, PRECO)
+VALUES
+('NOTEBOOK CORE INTEL I7 13 GERACAO', 'COMPUTADORES', 4877.38);
+
+INSERT INTO TBL_PRODUTOS
+(NOME, CATEGORIA, PRECO)
+VALUES
+('NOTEBOOK CORE INTEL I7 14 GERACAO', 'COMPUTADORES', 6111.99);
+
+INSERT INTO TBL_PRODUTOS
+(NOME, CATEGORIA, PRECO)
+VALUES
+('PC GAMER CORE I5 RYZEN', 'COMPUTADORES', 3999.99);
+
+INSERT INTO TBL_PRODUTOS
+(NOME, CATEGORIA, PRECO)
+VALUES
+('MONITOR GAMER 27', 'COMPUTADORES', 999.88);
+
+INSERT INTO TBL_PRODUTOS
+(NOME, CATEGORIA, PRECO)
+VALUES
+('MONITOR OLED 32', 'COMPUTADORES', 4000.00);
+
+INSERT INTO TBL_PRODUTOS
+(NOME, CATEGORIA, PRECO)
+VALUES
+('IMPRESSORA JATO DE TINTA MULTIFUNCIONAL', 'IMPRESSORAS', 1021.57);
+
+INSERT INTO TBL_PRODUTOS
+(NOME, CATEGORIA, PRECO)
+VALUES
+('MESA PORTATIL COM GAVETAS', 'MOVEIS', 759.30);
+GO
+
+SELECT * FROM TBL_PRODUTOS;
+/*
+IDPRODUTO  NOME                                                                    CATEGORIA                PREÇO
+
+1	                 LIVRO SQL SERVER ESSENCIAL	                        LIVROS	                      102.98
+2	                 LIVRO ORACLE ESSENCIAL	                                LIVROS	                      210.41
+3	                 LIVRO C# DO BASICO AO AVANCADO	                LIVROS	                      153.55
+4	                 NOTEBOOK CORE INTEL I7 13 GERACAO	            COMPUTADORES     	4877.38
+5	                 NOTEBOOK CORE INTEL I7 14 GERACAO	            COMPUTADORES     	6111.99
+6	                 PC GAMER CORE I5 RYZEN	                                COMPUTADORES     	3999.99
+7	                 MONITOR GAMER 27	                                            COMPUTADORES          999.88
+8	                 MONITOR OLED 32	                                                COMPUTADORES     	4000.00
+9	                 IMPRESSORA JATO DE TINTA MULTIFUNCIONAL	IMPRESSORAS	        1021.57
+10	                 MESA PORTATIL COM GAVETAS                         	MOVEIS	                      759.30
+*/
+SELECT * FROM TBL_HISTORICO;
+
+/* VERIFICA O USUARIO LOGADO */
+
+SELECT SUSER_NAME();
+SQL\Vagner
+
+/* TRIGGER DE DADOS -- DML (Data Manipulation Language) */
+
+CREATE TRIGGER TRG_ATUALIZA_PRECO
+ON DBO.TBL_PRODUTOS
+FOR UPDATE
+AS
+
+	DECLARE @IDPRODUTO INTEGER
+	DECLARE @PRODUTO VARCHAR(100)
+	DECLARE @CATEGORIA VARCHAR(50)
+	DECLARE @PRECO DECIMAL(18,2)
+	DECLARE @PRECONOVO DECIMAL(18,2)
+	DECLARE @DATA  DATETIME
+	DECLARE @USUARIO VARCHAR(50)
+	DECLARE @MENSAGEM VARCHAR(100)
+
+	/* INFORMAÇÕES VINDO DE TABELAS */
+	SELECT @IDPRODUTO       = IDPRODUTO FROM INSERTED 
+	SELECT @PRODUTO          =  NOME FROM INSERTED 
+	SELECT @CATEGORIA       =  CATEGORIA FROM INSERTED 
+	SELECT @PRECO               =  PRECO FROM DELETED 
+	SELECT @PRECONOVO      = PRECO FROM INSERTED 
+	/* INFORMAÇÕES VINDO DE FUNÇÕES OU LITERAL */
+	SET @DATA                         = GETDATE()
+	SET @USUARIO                   = SUSER_NAME() 
+	SET @MENSAGEM              = 'VALOR INSERIDO PELA TRIGGER (TBL_ATUALIZA_PRECO)' 
+
+	INSERT INTO TBL_HISTORICO
+	(PRODUTO, CATEGORIA, PRECOANTIGO, PRECONOVO, DATA, USUARIO, MENSAGEM)
+	VALUES
+	(@PRODUTO, @CATEGORIA, @PRECO, @PRECONOVO, @DATA, @USUARIO, @MENSAGEM);
+
+	PRINT 'TRIGGER EXECUTADA COM SUCESSO !'
+
+GO
+
+/* EXECUTA UM UPDATE */
+
+UPDATE 
+	TBL_PRODUTOS
+SET 
+	PRECO = 122.88
+WHERE 
+	IDPRODUTO = 1;
+GO
+
+/* CONFERE AS INFORMAÇÕES NAS TABELAS */
+
+SELECT * FROM TBL_PRODUTOS;
+/*
+1	LIVRO SQL SERVER ESSENCIAL	                                                     LIVROS	                 122.88
+2	LIVRO ORACLE ESSENCIAL                                                             LIVROS	                  210.41
+3	LIVRO C# DO BASICO AO AVANCADO	                                             LIVROS	                  153.55
+4	NOTEBOOK CORE INTEL I7 13 GERACAO	                                     COMPUTADORES	4877.38
+5	NOTEBOOK CORE INTEL I7 14 GERACAO	                                     COMPUTADORES	6111.99
+6	PC GAMER CORE I5 RYZEN	                                                         COMPUTADORES	3999.99
+7	MONITOR GAMER 27	                                                                     COMPUTADORES	  999.88
+8	MONITOR OLED 32	                                                                         COMPUTADORES	4000.00
+9	IMPRESSORA JATO DE TINTA MULTIFUNCIONAL	                             IMPRESSORAS	    1021.57
+10	MESA PORTATIL COM GAVETAS	                                                     MOVEIS	                  759.30
+*/
+SELECT * FROM TBL_HISTORICO;
+/*
+IDPRODUTO = 1	
+PRODUTO = LIVRO SQL SERVER ESSENCIAL	LIVROS	
+PRECO = 102.98	
+PRECONOVO = 122.88	
+DATA = 2024-10-26 15:59:24.813
+USUARIO = SQL\Vagner	
+MENSAGEM = VALOR INSERIDO PELA TRIGGER (TBL_ATUALIZA_PRECO)
+*/
+
+UPDATE
+	TBL_PRODUTOS
+SET
+	NOME = 'LIVRO C# PARA INICIANTES'
+WHERE 
+	IDPRODUTO = 1;
+GO
+
+SELECT * FROM TBL_PRODUTOS;
+
+/*
+1	LIVRO C# PARA INICIANTES  	                                                        LIVROS	                  122.88
+2	LIVRO ORACLE ESSENCIAL                                                             LIVROS	                  210.41
+3	LIVRO C# DO BASICO AO AVANCADO	                                             LIVROS	                  153.55
+4	NOTEBOOK CORE INTEL I7 13 GERACAO	                                     COMPUTADORES	4877.38
+5	NOTEBOOK CORE INTEL I7 14 GERACAO	                                     COMPUTADORES	6111.99
+6	PC GAMER CORE I5 RYZEN	                                                         COMPUTADORES	3999.99
+7	MONITOR GAMER 27	                                                                     COMPUTADORES	  999.88
+8	MONITOR OLED 32	                                                                         COMPUTADORES	4000.00
+9	IMPRESSORA JATO DE TINTA MULTIFUNCIONAL	                             IMPRESSORAS	    1021.57
+10	MESA PORTATIL COM GAVETAS	                                                     MOVEIS	                  759.30
+*/
+
+SELECT * FROM TBL_HISTORICO;
+/*
+1	LIVRO SQL SERVER ESSENCIAL	LIVROS	102.98	122.88	2024-10-26 15:59:24.813	SQL\Vagner	VALOR INSERIDO PELA TRIGGER (TBL_ATUALIZA_PRECO)
+2	LIVRO C# PARA INICIANTES	LIVROS	122.88	122.88	2024-10-26 16:15:40.120	SQL\Vagner	VALOR INSERIDO PELA TRIGGER (TBL_ATUALIZA_PRECO)
+*/
+
+/* ARRUMA A TRIGGER EM UMA COLUNA */
+
+DROP TRIGGER TRG_ATUALIZA_PRECO;
+GO
+
+CREATE TRIGGER TRG_ATUALIZA_PRECO
+ON DBO.TBL_PRODUTOS
+FOR UPDATE  AS
+IF UPDATE (PRECO)
+BEGIN
+
+	DECLARE @IDPRODUTO INTEGER
+	DECLARE @PRODUTO VARCHAR(100)
+	DECLARE @CATEGORIA VARCHAR(50)
+	DECLARE @PRECO DECIMAL(18,2)
+	DECLARE @PRECONOVO DECIMAL(18,2)
+	DECLARE @DATA  DATETIME
+	DECLARE @USUARIO VARCHAR(50)
+	DECLARE @MENSAGEM VARCHAR(100)
+
+	/* INFORMAÇÕES VINDO DE TABELAS */
+	SELECT @IDPRODUTO       = IDPRODUTO FROM INSERTED 
+	SELECT @PRODUTO          =  NOME FROM INSERTED 
+	SELECT @CATEGORIA       =  CATEGORIA FROM INSERTED 
+	SELECT @PRECO               =  PRECO FROM DELETED 
+	SELECT @PRECONOVO      = PRECO FROM INSERTED 
+	/* INFORMAÇÕES VINDO DE FUNÇÕES OU LITERAL */
+	SET @DATA                         = GETDATE()
+	SET @USUARIO                   = SUSER_NAME() 
+	SET @MENSAGEM              = 'VALOR INSERIDO PELA TRIGGER (TBL_ATUALIZA_PRECO)' 
+
+	INSERT INTO TBL_HISTORICO
+	(PRODUTO, CATEGORIA, PRECOANTIGO, PRECONOVO, DATA, USUARIO, MENSAGEM)
+	VALUES
+	(@PRODUTO, @CATEGORIA, @PRECO, @PRECONOVO, @DATA, @USUARIO, @MENSAGEM);
+
+	PRINT 'TRIGGER EXECUTADA COM SUCESSO !'
+
+END
+GO
+
+UPDATE
+	TBL_PRODUTOS
+SET
+	NOME = 'LIVRO JAVA AVANCADO'
+WHERE
+	IDPRODUTO = 2;
+GO
+
+SELECT * FROM TBL_HISTORICO;
+/* O HISTÓRICO NÃO FOI ATUALIZADO PORQUE A ATUALIZAÇÃO FOI NO CAMPO NOME
+E A TRIGGER SÓ REGISTRA ATUALIZAÇÃO NO PREÇO.
+
+1	LIVRO SQL SERVER ESSENCIAL	LIVROS	102.98	122.88	2024-10-26 15:59:24.813	SQL\Vagner	VALOR INSERIDO PELA TRIGGER (TBL_ATUALIZA_PRECO)
+2	LIVRO C# PARA INICIANTES	LIVROS	122.88	122.88	2024-10-26 16:15:40.120	SQL\Vagner	VALOR INSERIDO PELA TRIGGER (TBL_ATUALIZA_PRECO)
+*/
+
+SELECT * FROM TBL_PRODUTOS
+/*
+1	LIVRO C# PARA INICIANTES  	                                                        LIVROS	                  122.88
+2	LIVRO JAVA AVANCADO                                                                   LIVROS	                  210.41
+3	LIVRO C# DO BASICO AO AVANCADO	                                             LIVROS	                  153.55
+4	NOTEBOOK CORE INTEL I7 13 GERACAO	                                     COMPUTADORES	4877.38
+5	NOTEBOOK CORE INTEL I7 14 GERACAO	                                     COMPUTADORES	6111.99
+6	PC GAMER CORE I5 RYZEN	                                                         COMPUTADORES	3999.99
+7	MONITOR GAMER 27	                                                                     COMPUTADORES	  999.88
+8	MONITOR OLED 32	                                                                         COMPUTADORES	4000.00
+9	IMPRESSORA JATO DE TINTA MULTIFUNCIONAL	                             IMPRESSORAS	    1021.57
+10	MESA PORTATIL COM GAVETAS	                                                     MOVEIS	                  759.30
+*/
+
+/* ============================================================================= */
+/* ============================================================================= */
+/* ============================================================================= */
+/* ============================================================================= */
+
+/* ==================== VARIÁVEIS COM SELECT ==================== */
+
+CREATE TABLE TBL_RESULTADO
+(
+	IDRESULTADO INTEGER PRIMARY KEY IDENTITY,
+	RESULTADO INTEGER
+);
+GO
+
+INSERT INTO TBL_RESULTADO VALUES ((SELECT 10 + 2))
+GO
+
+SELECT * FROM TBL_RESULTADO;
+
+/*
+IDRESULTADO   RESULTADO
+1	                      12
+*/
+
+/* ATRIBUI SELECTS A VARIÁVEIS - ANONIMO */
+
+DECLARE
+	@RESULTADO INTEGER
+	SET @RESULTADO = (SELECT 10 + 48)
+
+	INSERT INTO TBL_RESULTADO VALUES (@RESULTADO)
+	GO
+
+SELECT * FROM TBL_RESULTADO;
+/*
+IDRESULTADO  RESULTADO
+1	                     12
+2	                      58
+*/
+
+DECLARE
+	@RESULTADO INTEGER
+	SET @RESULTADO = (SELECT 48 + 48)
+
+	INSERT INTO TBL_RESULTADO VALUES (@RESULTADO)
+	
+	PRINT 'VALOR ' + CAST(@RESULTADO AS VARCHAR) + ' INSERIDO COM SUCESSO !'
+GO
+
+SELECT * FROM TBL_RESULTADO;
+GO
+
+/*
+IDRESULTADO    RESULTADO
+1	                       12
+2	                        58
+3	                        96
+*/
+
+
+/* CRIA UMA NOVA TRIGGER */
+
+CREATE TABLE TBL_EMPREGADO
+(
+	IDEMPREGADO INTEGER PRIMARY KEY,
+	NOME VARCHAR(50),
+	SALARIO MONEY,
+	IDGERENTE INTEGER
+);
+GO
+
+ALTER TABLE TBL_EMPREGADO ADD CONSTRAINT FK_TBL_GERENTE
+FOREIGN KEY (IDGERENTE) REFERENCES TBL_EMPREGADO(IDEMPREGADO)
+GO
+
+INSERT INTO TBL_EMPREGADO
+(IDEMPREGADO, NOME, SALARIO, IDGERENTE)
+VALUES
+(1, 'MICHELE OLIVEIRA', 7854.33, NULL);
+
+INSERT INTO TBL_EMPREGADO
+(IDEMPREGADO, NOME, SALARIO, IDGERENTE)
+VALUES
+(2, 'HELIO GARGIA', 7854.33, NULL);
+
+INSERT INTO TBL_EMPREGADO
+(IDEMPREGADO, NOME, SALARIO, IDGERENTE)
+VALUES
+(3, 'ROSANA CARDOSO', 1412.90, 2);
+
+INSERT INTO TBL_EMPREGADO
+(IDEMPREGADO, NOME, SALARIO, IDGERENTE)
+VALUES
+(4, 'SAMANTHA FONSECA', 1412.90, 2);
+
+INSERT INTO TBL_EMPREGADO
+(IDEMPREGADO, NOME, SALARIO, IDGERENTE)
+VALUES
+(5, 'PAULO MEYER', 1412.90, 2);
+
+INSERT INTO TBL_EMPREGADO
+(IDEMPREGADO, NOME, SALARIO, IDGERENTE)
+VALUES
+(7, 'PATRICIA ALVES', 2101.02, 1);
+
+INSERT INTO TBL_EMPREGADO
+(IDEMPREGADO, NOME, SALARIO, IDGERENTE)
+VALUES
+(8, 'PATRICIA CARNEIRO', 2217.98, 1);
+
+INSERT INTO TBL_EMPREGADO
+(IDEMPREGADO, NOME, SALARIO, IDGERENTE)
+VALUES
+(9, 'JOAQUIM BARRA', 4444.44, 1);
+
+INSERT INTO TBL_EMPREGADO
+(IDEMPREGADO, NOME, SALARIO, IDGERENTE)
+VALUES
+(6, 'CAIO PRAGA', 5200.01, 2);
+
+INSERT INTO TBL_EMPREGADO
+(IDEMPREGADO, NOME, SALARIO, IDGERENTE)
+VALUES
+(10, 'MARA SIQUEIRA', 3214.56, 1);
+GO
+
+SELECT * FROM TBL_EMPREGADO;
+GO
+
+/*
+IDEMPREGADO      NOME                               SALARIO       IDGERENTE
+1	                           MICHELE OLIVEIRA	          7854,33	     NULL
+2	                           HELIO GARGIA	                  7854,33	     NULL
+3	                           ROSANA CARDOSO	          1412,90	     2
+4	                           SAMANTHA FONSECA	       1412,90	     2   
+5	                           PAULO MEYER	                   1412,90	     2
+6	                           CAIO PRAGA	                        5200,01	 2
+7	                           PATRICIA ALVES	                2101,02	 1
+8	                           PATRICIA CARNEIRO            2217,98	     1
+9	                           JOAQUIM BARRA	                4444,44	 1
+10                           MARA SIQUEIRA	                3214,56	 1
+*/
+
+CREATE TABLE TBL_HISTORICO_SALARIO
+(
+	IDEMPREGADO INTEGER,
+	SALARIOANTIGO MONEY,
+	SALARIONOVO MONEY,
+	DATA DATETIME
+);
+GO
+
+CREATE TRIGGER TRG_SALARIO
+ON DBO.TBL_EMPREGADO
+FOR UPDATE AS
+IF UPDATE(SALARIO)
+BEGIN
+
+	INSERT INTO TBL_HISTORICO_SALARIO
+	(IDEMPREGADO, SALARIOANTIGO, SALARIONOVO, DATA)
+	SELECT DELETED.IDEMPREGADO, DELETED.SALARIO, INSERTED.SALARIO, GETDATE()
+	FROM DELETED, INSERTED
+	WHERE DELETED.IDEMPREGADO = INSERTED.IDEMPREGADO
+
+END
+GO
+
+UPDATE TBL_EMPREGADO SET SALARIO = SALARIO * 1.1;
+
+SELECT * FROM TBL_EMPREGADO;
+/*
+IDEMPREGADO    NOME                                 SALARIO    IDGERENTE
+1	                         MICHELE OLIVEIRA 	        8639,763	   NULL
+2	                         HELIO GARGIA	                8639,763	   NULL
+3	                          ROSANA CARDOSO	          1554,19	   2
+4	                          SAMANTHA FONSECA	      1554,19	    2
+5	                         PAULO MEYER	                  1554,19	    2
+6	                         CAIO PRAGA	                     5720,011	    2
+7	                         PATRICIA ALVES	                 2311,122	    1
+8	                         PATRICIA CARNEIRO	         2439,778     1
+9	                         JOAQUIM BARRA	             4888,884      1
+10	                         MARA SIQUEIRA	                 3536,016      1
+*/
+
+SELECT * FROM TBL_HISTORICO_SALARIO;
+/*
+IDEMPREGADO           SALARIOANTIGO           SALARIONOVO             DATA
+10                         	    3214,56	                       3536,016	                   2024-10-26 20:37:42.040
+9	                                4444,44	                       4888,884	                    2024-10-26 20:37:42.040
+8	                                2217,98	                       2439,778	                    2024-10-26 20:37:42.040
+7	                                2101,02	                       2311,122	                    2024-10-26 20:37:42.040
+6	                                5200,01	                        5720,011	                    2024-10-26 20:37:42.040
+5	                                1412,90	                          1554,19	                    2024-10-26 20:37:42.040
+4	                                1412,90	                          1554,19	                    2024-10-26 20:37:42.040
+3	                                 1412,90	                          1554,19	                    2024-10-26 20:37:42.040
+2	                                 7854,33	                        8639,763	                     2024-10-26 20:37:42.040
+1	                                 7854,33	                         8639,763	                     2024-10-26 20:37:42.040
+*/
+
+/* QUERY PARA MOSTRAR = NOME, SALARIO ANTIGO, SALARIO NOVO E DATA */
+
+
+SELECT 
+	TBL_EMPREGADO.NOME,
+	TBL_HISTORICO_SALARIO.SALARIOANTIGO,
+	TBL_HISTORICO_SALARIO.SALARIONOVO,
+	TBL_HISTORICO_SALARIO.DATA
+FROM 
+	TBL_EMPREGADO	
+INNER JOIN
+	TBL_HISTORICO_SALARIO
+ON TBL_EMPREGADO.IDEMPREGADO = TBL_HISTORICO_SALARIO.IDEMPREGADO;
+ 
+ /*
+ NOME                                  SALARIO ANTERIOR           SALARIO NOVO           DATA
+ MARA SIQUEIRA	                 3214,56	                            3536,016	                    2024-10-26 20:37:42.040
+JOAQUIM BARRA	                 4444,44	                            4888,884	                    2024-10-26 20:37:42.040
+PATRICIA CARNEIRO	         2217,98	                            2439,778	                    2024-10-26 20:37:42.040
+PATRICIA ALVES	                 2101,02	                            2311,122	                    2024-10-26 20:37:42.040
+CAIO PRAGA	                     5200,01	                             5720,011	                    2024-10-26 20:37:42.040
+PAULO MEYER	                     1412,90	                              1554,19	                    2024-10-26 20:37:42.040
+SAMANTHA FONSECA	          1412,90	                              1554,19	                    2024-10-26 20:37:42.040
+ROSANA CARDOSO	              1412,90	                               1554,19	                    2024-10-26 20:37:42.040
+HELIO GARGIA	                      7854,33	                              8639,763	                     2024-10-26 20:37:42.040
+MICHELE OLIVEIRA	              7854,33	                             8639,763	                     2024-10-26 20:37:42.040
+ */
+
+/* ============================================================================= */
+/* ============================================================================= */
+/* ============================================================================= */
+/* ============================================================================= */
+
+/* ================== TRIGGER DE RANGE - INTRODUÇÃO À TRANSAÇÃO ================== */
+
+CREATE TABLE TBL_SALARIO_RANGE
+(
+	SALARIO_MINIMO MONEY,
+	SALARIO_MAXIMO MONEY
+);
+GO
+
+INSERT INTO TBL_SALARIO_RANGE
+(SALARIO_MINIMO, SALARIO_MAXIMO)
+VALUES
+(1412.00, 11000.00);
+
+SELECT * FROM TBL_SALARIO_RANGE;
+/*
+1412,00	6000,00
+*/
+
+CREATE TRIGGER TRG_SALARIO_RANGE
+ON DBO.TBL_EMPREGADO
+FOR INSERT, UPDATE
+AS
+
+	DECLARE
+		@SALARIO_MINIMO MONEY,
+		@SALARIO_MAXIMO MONEY,
+		@SALARIO_ATUAL MONEY
+
+	SELECT
+		@SALARIO_MINIMO = SALARIO_MINIMO,
+		@SALARIO_MAXIMO = SALARIO_MAXIMO
+	FROM
+		TBL_SALARIO_RANGE
+
+	SELECT
+		@SALARIO_ATUAL = INSERTED.SALARIO
+	FROM
+		INSERTED 
+
+
+	IF (@SALARIO_ATUAL < @SALARIO_MINIMO)
+	BEGIN
+	
+		RAISERROR('O SALÁRIO ATUAL É MENOR QUE O PISO', 16, 1)
+		ROLLBACK TRANSACTION
+
+	END
+
+	IF (@SALARIO_ATUAL > @SALARIO_MAXIMO)
+	BEGIN
+
+		RAISERROR('O SALÁRIO ATUAL É MAIOR QUE O TETO', 16, 1)
+		ROLLBACK TRANSACTION
+
+	END
+
+GO
+
+UPDATE 
+	TBL_EMPREGADO
+SET
+	SALARIO = 9000
+WHERE
+	IDEMPREGADO = 1;
+GO
+/*
+Msg 50000, Level 16, State 1, Procedure TRG_SALARIO_RANGE, Line 595
+O SALÁRIO ATUAL É MAIOR QUE O TETO
+Msg 3609, Level 16, State 1, Line 562
+The transaction ended in the trigger. The batch has been aborted.
+*/
+
+UPDATE
+	TBL_EMPREGADO
+SET
+	SALARIO	= 950
+WHERE
+	IDEMPREGADO = 8;
+GO
+/*
+Msg 50000, Level 16, State 1, Procedure TRG_SALARIO_RANGE, Line 601
+O SALÁRIO ATUAL É MENOR QUE O PISO
+Msg 3609, Level 16, State 1, Line 576
+The transaction ended in the trigger. The batch has been aborted.
+*/
+
+/* VERIFICA O TEXTO DE UMA TRIGGER */
+
+SP_HELPTEXT TRG_SALARIO_RANGE;
+/* TRIGGER TRANSFORMADA EM ARQUIVO TEXTO */
+
+/*
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE TRIGGER TRG_SALARIO_RANGE
+ON DBO.TBL_EMPREGADO
+FOR INSERT, UPDATE
+AS
+
+	DECLARE
+		@SALARIO_MINIMO MONEY,
+		@SALARIO_MAXIMO MONEY,
+		@SALARIO_ATUAL MONEY
+
+	SELECT
+		@SALARIO_MINIMO = SALARIO_MINIMO,
+		@SALARIO_MAXIMO = SALARIO_MAXIMO
+	FROM
+		TBL_SALARIO_RANGE
+
+	SELECT
+		@SALARIO_ATUAL = INSERTED.SALARIO
+	FROM
+		INSERTED 
+
+
+	IF (@SALARIO_ATUAL < @SALARIO_MINIMO)
+	BEGIN
+	
+		RAISERROR('O SALÁRIO ATUAL É MENOR QUE O PISO', 16, 1)
+		ROLLBACK TRANSACTION
+
+	END
+
+	IF (@SALARIO_ATUAL > @SALARIO_MAXIMO)
+	BEGIN
+
+		RAISERROR('O SALÁRIO ATUAL É MAIOR QUE O TETO', 16, 1)
+		ROLLBACK TRANSACTION
+
+	END
+*/
